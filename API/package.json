@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "ts-node-dev --respawn --ignore-watch node_modules src/index.ts ",
+    "dev": "ts-node-dev --respawn --poll --transpile-only --ignore-watch node_modules src/index.ts ",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "node dist/index.js"
   },
