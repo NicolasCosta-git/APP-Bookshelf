@@ -1,10 +1,10 @@
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
 
-app.get("/", (request: any, response: any) => {
-  return response.send("aloaa");
-});
+require('dotenv').config()
+
+app.get('/', (request: any, response: any) => response.send('hello world'))
 
 app.listen(8080, () => {
-  console.log("http://localhost:8080");
-});
+  console.log('http://localhost:8080')
+})
