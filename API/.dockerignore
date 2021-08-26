@@ -1,2 +1,6 @@
 node_modules
 dist
+.eslintignore
+.eslintrc.json
+.editorconfig
+.gitgnore
