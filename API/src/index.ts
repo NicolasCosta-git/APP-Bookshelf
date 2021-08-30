@@ -4,23 +4,31 @@ import { ApolloServer } from 'apollo-server-express'
 import { createConnection } from 'typeorm'
 import express from 'express'
 import { testResolver } from './resolvers/testResolver'
-import UserResolver from './resolvers/UserResolver'
+import UserResolver from './resolvers/UsersResolver'
+import { graphqlUploadExpress } from 'graphql-upload'
 
 require('dotenv').config()
 
 const PORT = process.env.PORT
 
 const server = async () => {
-    const app = express()
-    await createConnection()
+    try {
+        await createConnection()
+    } catch (error) {
+        console.log(error)
+    }
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [testResolver, UserResolver]
         }),
-        context: ({ req, res }) => ({ req, res })
+        context: ({ req, res }) => ({ req, res }),
+        introspection: true
     })
     await apolloServer.start()
+
+    const app = express()
+    app.use(graphqlUploadExpress({ maxFieldSize: 1000000000000000, maxFiles: 10 }))
     apolloServer.applyMiddleware({ app, cors: true })
     app.listen(PORT, () => {
         console.log(`Server on at http://localhost:${PORT}/graphql`)
