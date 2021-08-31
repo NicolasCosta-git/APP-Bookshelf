@@ -10,7 +10,7 @@ import saveAvatar from '../helpers/avatar/avatar.save'
 export class UsersController {
     static async createUser (data: UsersInput, upload?: Upload): Promise<Users> {
         if (upload) {
-            data.avatar = await saveAvatar(upload)
+            data.avatar = (await saveAvatar(upload)).uri.Location
         } else {
             data.avatar = ''
         }
@@ -44,8 +44,11 @@ export class UsersController {
         return true
     }
 
-    static async updateUser (id: String, data: UsersUpdate): Promise<Users> {
-    // @ts-ignore
+    static async updateUser (id: String, data: UsersUpdate, upload: Upload): Promise<Users> {
+        if (upload) {
+            data.avatar = (await saveAvatar(upload)).uri.Location
+        }
+        // @ts-ignore
         const user = await this.getUser(id)
         console.log(user)
         await Users.update(user, { ...data })
