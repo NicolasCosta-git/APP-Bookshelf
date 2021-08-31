@@ -6,6 +6,7 @@ import express from 'express'
 import { testResolver } from './resolvers/testResolver'
 import UserResolver from './resolvers/UsersResolver'
 import { graphqlUploadExpress } from 'graphql-upload'
+const morgan = require('morgan')
 
 require('dotenv').config()
 
@@ -29,6 +30,7 @@ const server = async () => {
 
     const app = express()
     app.use(graphqlUploadExpress({ maxFieldSize: 1000000000000000, maxFiles: 10 }))
+    app.use(morgan('dev'))
     apolloServer.applyMiddleware({ app, cors: true })
     app.listen(PORT, () => {
         console.log(`Server on at http://localhost:${PORT}/graphql`)
