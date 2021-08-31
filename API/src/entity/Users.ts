@@ -1,37 +1,27 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
-import { Field, ObjectType } from 'type-graphql'
+import { Field, ID, ObjectType } from 'type-graphql'
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { hashPasswordTransform } from '../helpers/crypto/crypto'
 
 @Entity()
 @ObjectType()
 export class Users extends BaseEntity {
     @PrimaryGeneratedColumn()
-    @Field()
-    @IsNotEmpty()
-    @IsString()
-    id: String
+    @Field(() => ID)
+    id: string
 
     @Column()
     @Field()
-    @IsNotEmpty()
-    @IsString()
-    name: String
+    name: string
 
-    @Column()
+    @Column({ unique: true })
     @Field()
-    @IsNotEmpty()
-    @IsString()
-    email: String
+    email: string
 
-    @Column()
+    @Column({ transformer: hashPasswordTransform })
     @Field()
-    @IsNotEmpty()
-    @IsString()
-    password: String
+    password: string
 
     @Column({ nullable: true })
-    @IsOptional()
     @Field()
-    @IsString()
-    avatar: String
+    avatar: string
 }

@@ -16,6 +16,7 @@ export class UsersController {
         }
         // @ts-ignore
         const user = await Users.create({ ...data }).save()
+        user.password = 'secret'
         if (!user) {
             throw new ApolloError('Error creating user')
         }
@@ -28,6 +29,7 @@ export class UsersController {
     }
 
     static async getUser (data: UsersDetail): Promise<Users> {
+    // @ts-ignore
         const user = await Users.findOne(data)
         if (!user) {
             throw new UserInputError('User not found')
@@ -44,14 +46,19 @@ export class UsersController {
         return true
     }
 
-    static async updateUser (id: String, data: UsersUpdate, upload: Upload): Promise<Users> {
+    static async updateUser (
+        id: String,
+        data: UsersUpdate,
+        upload?: Upload
+    ): Promise<Users> {
         if (upload) {
             data.avatar = (await saveAvatar(upload)).uri.Location
         }
         // @ts-ignore
         const user = await this.getUser(id)
-        console.log(user)
-        await Users.update(user, { ...data })
+        // @ts-ignore
+        await Users.update({ id: user.id }, { ...data })
+        data.password = 'secret'
         // @ts-ignore
         return { ...user, ...data }
     }

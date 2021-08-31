@@ -12,12 +12,12 @@ export class UsersDetail {
     @IsOptional()
     @IsNotEmpty()
     @IsString()
-    id?: String;
+    id?: string;
 
     @Field({ nullable: true })
     @IsOptional()
     @IsNotEmpty()
     @IsEmail()
     @IsString()
-    email?: String;
+    email?: string;
 }

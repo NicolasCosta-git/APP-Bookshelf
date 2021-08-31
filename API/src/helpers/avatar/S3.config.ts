@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-export = {
+export const S3 = {
     s3: {
         credentials: {
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
