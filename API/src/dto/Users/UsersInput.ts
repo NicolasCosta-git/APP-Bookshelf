@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
 import { Field, InputType } from 'type-graphql'
 
 @InputType()
@@ -18,9 +18,4 @@ export class UsersInput {
     @IsString()
     @IsNotEmpty()
     password: String
-
-    @Field({ nullable: true })
-    @IsOptional()
-    @IsNotEmpty()
-    avatar: String
 }

@@ -7,21 +7,29 @@ import { hashPasswordTransform } from '../helpers/crypto/crypto'
 export class Users extends BaseEntity {
     @PrimaryGeneratedColumn()
     @Field(() => ID)
-    id: string
+    id: string;
 
     @Column()
     @Field()
-    name: string
+    name: string;
 
     @Column({ unique: true })
     @Field()
-    email: string
+    email: string;
 
     @Column({ transformer: hashPasswordTransform })
     @Field()
-    password: string
+    password: string;
 
     @Column({ nullable: true })
-    @Field()
-    avatar: string
+    @Field({ nullable: true })
+    avatar: string;
+
+    @Column({ nullable: true })
+    @Field({ nullable: true })
+    createdAt: string;
+
+    @Column({ nullable: true })
+    @Field({ nullable: true })
+    updatedAt: string;
 }

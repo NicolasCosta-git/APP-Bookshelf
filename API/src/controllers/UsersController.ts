@@ -5,22 +5,30 @@ import { Users } from '../entity/Users'
 import { ApolloError } from 'apollo-server-express'
 import { UsersUpdate } from '../dto/Users/UsersUpdate'
 import { UsersInput } from '../dto/Users/UsersInput'
-import saveAvatar from '../helpers/avatar/avatar.save'
+import uploadS3 from '../helpers/S3/upload.S3'
 
 export class UsersController {
-    static async createUser (data: UsersInput, upload?: Upload): Promise<Users> {
-        if (upload) {
-            data.avatar = (await saveAvatar(upload)).uri.Location
-        } else {
-            data.avatar = ''
+    static async createUser (data: UsersInput, avatar?: Upload): Promise<Users> {
+        try {
+            // @ts-ignore
+            const user = await Users.create({
+                ...data,
+                avatar: avatar ? await uploadS3(avatar, avatar) : null,
+                createdAt: Date().split(' ').splice(0, 6).join(' ')
+                // @ts-ignore
+            }).save()
+            user.password = 'secret'
+            if (!user) {
+                throw new ApolloError('Error creating user')
+            }
+            return user
+        } catch (err) {
+            if (err.code === 'ER_DUP_ENTRY') {
+                throw new UserInputError('E-mail already in use')
+            } else {
+                throw new ApolloError('Unable to create user')
+            }
         }
-        // @ts-ignore
-        const user = await Users.create({ ...data }).save()
-        user.password = 'secret'
-        if (!user) {
-            throw new ApolloError('Error creating user')
-        }
-        return user
     }
 
     static async Users (): Promise<Users[]> {
@@ -39,7 +47,7 @@ export class UsersController {
 
     static async deleteUser (data: UsersDetail): Promise<Boolean> {
         const user = await this.getUser(data)
-        const deletedUser = await Users.delete(user)
+        const deletedUser = await Users.delete({ id: user.id })
         if (!deletedUser) {
             throw new ApolloError('Error deleting user')
         }
@@ -49,15 +57,28 @@ export class UsersController {
     static async updateUser (
         id: String,
         data: UsersUpdate,
-        upload?: Upload
+        avatar?: Upload
     ): Promise<Users> {
-        if (upload) {
-            data.avatar = (await saveAvatar(upload)).uri.Location
-        }
-        // @ts-ignore
+    // @ts-ignore
         const user = await this.getUser(id)
-        // @ts-ignore
-        await Users.update({ id: user.id }, { ...data })
+        try {
+            await Users.update(
+                { id: user.id },
+                // @ts-ignore
+                {
+                    ...data,
+                    avatar: avatar ? await uploadS3(avatar, 'avatar') : user.avatar,
+                    updatedAt: Date().split(' ').splice(0, 6).join(' ')
+                }
+            )
+        } catch (err) {
+            if (err.code === 'ER_DUP_ENTRY') {
+                throw new UserInputError('E-mail already in use')
+            } else {
+                throw new ApolloError('Unable to create user')
+            }
+        }
+
         data.password = 'secret'
         // @ts-ignore
         return { ...user, ...data }

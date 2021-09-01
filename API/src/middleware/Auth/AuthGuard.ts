@@ -18,7 +18,6 @@ export const AuthGuard: AuthChecker<Context> = ({ context }): boolean => {
     try {
         const { JWT_TOKEN: token } = process.env
         const decoded = verify(authtoken, token)
-        console.log(decoded)
         return !!decoded
     } catch {
         return false

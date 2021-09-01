@@ -10,7 +10,7 @@ import { GraphQLUpload, Upload } from 'graphql-upload'
 export default class UsersResolver {
     @Query(() => [Users])
     @Authorized()
-    async Users (): Promise<Users[]> {
+    async users (): Promise<Users[]> {
         return await UsersController.Users()
     }
 
@@ -24,9 +24,9 @@ export default class UsersResolver {
     @Mutation(() => Users)
     async createUser (
         @Arg('data', () => UsersInput) data: UsersInput,
-            @Arg('file', () => GraphQLUpload, { nullable: true }) file: Upload
+            @Arg('avatar', () => GraphQLUpload, { nullable: true }) avatar: Upload
     ): Promise<Users> {
-        return await UsersController.createUser(data, file)
+        return await UsersController.createUser(data, avatar)
     }
 
     @Mutation(() => Boolean)
@@ -39,8 +39,8 @@ export default class UsersResolver {
     async updateUser (
         @Arg('id', () => String) id: String,
             @Arg('data', () => UsersUpdate) data: UsersUpdate,
-            @Arg('file', () => GraphQLUpload, { nullable: true }) file: Upload
+            @Arg('avatar', () => GraphQLUpload, { nullable: true }) avatar: Upload
     ): Promise<Users> {
-        return await UsersController.updateUser(id, data, file)
+        return await UsersController.updateUser(id, data, avatar)
     }
 }

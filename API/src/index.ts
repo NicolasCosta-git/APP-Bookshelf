@@ -7,6 +7,7 @@ import UserResolver from './resolvers/UsersResolver'
 import { graphqlUploadExpress } from 'graphql-upload'
 import AuthResolver from './resolvers/AuthResolver'
 import { AuthGuard } from './middleware/Auth/AuthGuard'
+import BooksResolver from './resolvers/BooksResolver'
 
 const morgan = require('morgan')
 
@@ -23,7 +24,7 @@ const server = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchemaSync({
-            resolvers: [UserResolver, AuthResolver],
+            resolvers: [UserResolver, AuthResolver, BooksResolver],
             authChecker: AuthGuard
         }),
         context: ({ req, res }) => {

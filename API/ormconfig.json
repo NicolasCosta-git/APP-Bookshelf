@@ -8,3 +8,4 @@
   "entities": ["dist/**/*{.ts,.js}", "src/**/*{.ts,.js}"],
   "synchronize": true
 }
+
