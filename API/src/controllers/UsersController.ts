@@ -6,9 +6,12 @@ import { ApolloError } from 'apollo-server-express'
 import { UsersUpdate } from '../dto/Users/UsersUpdate'
 import { UsersInput } from '../dto/Users/UsersInput'
 import uploadS3 from '../helpers/S3/upload.S3'
+import { Service } from 'typedi'
 
+// precisa declarar a classe a ser injetada com o decorator @Service também
+@Service()
 export class UsersController {
-    static async createUser (data: UsersInput, avatar?: Upload): Promise<Users> {
+    async createUser (data: UsersInput, avatar?: Upload): Promise<Users> {
         try {
             // @ts-ignore
             const user = await Users.create({
@@ -31,13 +34,12 @@ export class UsersController {
         }
     }
 
-    static async Users (): Promise<Users[]> {
+    async Users (): Promise<Users[]> {
         const user = await Users.find()
         return user
     }
 
-    static async getUser (data: UsersDetail): Promise<Users> {
-    // @ts-ignore
+    async getUser (data: UsersDetail): Promise<Users> {
         const user = await Users.findOne(data)
         if (!user) {
             throw new UserInputError('User not found')
@@ -45,7 +47,7 @@ export class UsersController {
         return user
     }
 
-    static async deleteUser (data: UsersDetail): Promise<Boolean> {
+    async deleteUser (data: UsersDetail): Promise<Boolean> {
         const user = await this.getUser(data)
         const deletedUser = await Users.delete({ id: user.id })
         if (!deletedUser) {
@@ -54,7 +56,7 @@ export class UsersController {
         return true
     }
 
-    static async updateUser (
+    async updateUser (
         id: String,
         data: UsersUpdate,
         avatar?: Upload
@@ -79,8 +81,7 @@ export class UsersController {
             }
         }
 
-        data.password = 'secret'
         // @ts-ignore
-        return { ...user, ...data }
+        return { ...user, ...data, password: 'secret' }
     }
 }

@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+// dados de configuração do s3
 export function S3Config (path: string) {
     const s3 = {
         credentials: {

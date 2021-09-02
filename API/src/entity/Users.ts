@@ -4,6 +4,8 @@ import { hashPasswordTransform } from '../helpers/crypto/crypto'
 
 @Entity()
 @ObjectType()
+// a entidade vai virar uma tabela no banco, para usar ela diretamente sem o getRepository
+// precisa extender o BaseEntity
 export class Users extends BaseEntity {
     @PrimaryGeneratedColumn()
     @Field(() => ID)
@@ -17,6 +19,7 @@ export class Users extends BaseEntity {
     @Field()
     email: string;
 
+    // o transformer transforma um dado antes de inserir no banco
     @Column({ transformer: hashPasswordTransform })
     @Field()
     password: string;

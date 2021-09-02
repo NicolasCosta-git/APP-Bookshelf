@@ -19,12 +19,6 @@ export class BooksUpdate {
     @IsOptional()
     @IsString()
     @IsNotEmpty()
-    cover: string;
-
-    @Field({ nullable: true })
-    @IsOptional()
-    @IsString()
-    @IsNotEmpty()
     synopsis: string;
 
     @Field({ nullable: true })

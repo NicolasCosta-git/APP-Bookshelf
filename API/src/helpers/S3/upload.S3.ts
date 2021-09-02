@@ -10,6 +10,7 @@ export default async function uploadS3 (upload, path) {
 
     const { createReadStream, filename, mimetype } = upload
 
+    // envia o arquivo pro s3
     const file = await S3.upload({
         Body: createReadStream(),
         Key: `${uuid()}${extname(filename)}`,

@@ -16,11 +16,6 @@ export class BooksInput {
     @Field()
     @IsString()
     @IsNotEmpty()
-    cover: string;
-
-    @Field()
-    @IsString()
-    @IsNotEmpty()
     synopsis: string;
 
     @Field()

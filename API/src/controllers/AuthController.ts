@@ -4,11 +4,13 @@ import { ValidationError } from 'apollo-server-express'
 import { Users } from './../entity/Users'
 import { AuthObject } from '../middleware/Auth/AuthObject'
 import { AuthInput } from './../middleware/Auth/AuthInput'
+import { Service } from 'typedi'
 
 require('dotenv').config()
 
+@Service()
 export default class AuthController {
-    static async authenticate (data: AuthInput): Promise<AuthObject> {
+    async authenticate (data: AuthInput): Promise<AuthObject> {
         const user = await Users.findOne({ email: data.email })
         if (!user) {
             throw new ValidationError('Wrong email/password combination')
