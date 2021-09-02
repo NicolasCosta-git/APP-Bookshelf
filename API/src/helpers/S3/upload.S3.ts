@@ -5,7 +5,7 @@ require('dotenv').config()
 const AWS = require('aws-sdk')
 const { v4: uuid } = require('uuid')
 
-export default async function uploadS3 (upload, path) {
+export default async function uploadS3 (upload: any, path: string) {
     const S3 = new AWS.S3(S3Config(path))
 
     const { createReadStream, filename, mimetype } = upload

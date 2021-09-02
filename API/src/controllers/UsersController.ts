@@ -16,7 +16,7 @@ export class UsersController {
             // @ts-ignore
             const user = await Users.create({
                 ...data,
-                avatar: avatar ? await uploadS3(avatar, avatar) : null,
+                avatar: avatar ? await uploadS3(avatar, 'avatar') : null,
                 createdAt: Date().split(' ').splice(0, 6).join(' ')
                 // @ts-ignore
             }).save()

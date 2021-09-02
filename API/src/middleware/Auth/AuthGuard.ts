@@ -5,10 +5,11 @@ require('dotenv').config()
 
 interface Context {
     token?: string;
+    testToken?: string
 }
 
 export const AuthGuard: AuthChecker<Context> = ({ context }): boolean => {
-    const authHeader = context.token
+    const authHeader = context.testToken || context.token
 
     if (!authHeader) {
         return false
