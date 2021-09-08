@@ -16,8 +16,7 @@ export class UsersController {
             // @ts-ignore
             const user = await Users.create({
                 ...data,
-                avatar: avatar ? await uploadS3(avatar, 'avatar') : null,
-                createdAt: Date().split(' ').splice(0, 6).join(' ')
+                avatar: avatar ? await uploadS3(avatar, 'avatar') : null
                 // @ts-ignore
             }).save()
             user.password = 'secret'
@@ -69,8 +68,7 @@ export class UsersController {
                 // @ts-ignore
                 {
                     ...data,
-                    avatar: avatar ? await uploadS3(avatar, 'avatar') : user.avatar,
-                    updatedAt: Date().split(' ').splice(0, 6).join(' ')
+                    avatar: avatar ? await uploadS3(avatar, 'avatar') : user.avatar
                 }
             )
         } catch (err) {

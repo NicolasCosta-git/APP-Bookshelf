@@ -19,8 +19,14 @@ export class BooksInput {
     synopsis: string;
 
     @Field()
+    @IsString()
     @IsNotEmpty()
     pages: string;
+
+    @Field()
+    @IsString()
+    @IsNotEmpty()
+    price: string;
 
     @Field()
     @IsString()

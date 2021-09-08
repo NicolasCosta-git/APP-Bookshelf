@@ -1,10 +1,10 @@
 import { Field, ID, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity()
 @ObjectType()
 export class Books extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ unsigned: true })
     @Field(() => ID)
     id: string;
 
@@ -16,8 +16,9 @@ export class Books extends BaseEntity {
     @Column()
     author: string;
 
-    @Field({ nullable: false })
-    @Column({ nullable: false })
+    // nullable false
+    @Field({ nullable: true })
+    @Column({ nullable: true })
     cover: string;
 
     @Field()
@@ -38,17 +39,21 @@ export class Books extends BaseEntity {
 
     @Field()
     @Column()
+    price: string;
+
+    @Field()
+    @Column()
     publicationDate: string;
 
     @Field()
     @Column()
     publisher: string;
 
-    @Field({ nullable: true })
-    @Column({ nullable: true })
-    createdAt: string;
+    @CreateDateColumn({ name: 'createdAt' })
+    @Field()
+    createdAt: Date;
 
-    @Field({ nullable: true })
-    @Column({ nullable: true })
-    updatedAt: string;
+    @UpdateDateColumn({ name: 'updatedAt' })
+    @Field()
+    updatedAt: Date;
 }

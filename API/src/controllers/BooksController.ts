@@ -14,8 +14,7 @@ export class BooksController {
     async createBook (data: BooksInput, cover?: Upload): Promise<Books> {
         const book = await Books.create({
             ...data,
-            cover: cover ? await uploadS3(cover, 'book') : null,
-            createdAt: Date().split(' ').splice(0, 6).join(' ')
+            cover: cover ? await uploadS3(cover, 'book') : null
         }).save()
         if (!book) {
             throw new ApolloError('Unable to create book')
@@ -66,8 +65,7 @@ export class BooksController {
             { id: book.id },
             {
                 ...data,
-                cover: cover ? await uploadS3(cover, 'book') : null,
-                updatedAt: Date().split(' ').splice(0, 6).join(' ')
+                cover: cover ? await uploadS3(cover, 'book') : null
             }
         )
         // @ts-ignore

@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import { hashPasswordTransform } from '../helpers/crypto/crypto'
 
 @Entity()
@@ -7,7 +7,7 @@ import { hashPasswordTransform } from '../helpers/crypto/crypto'
 // a entidade vai virar uma tabela no banco, para usar ela diretamente sem o getRepository
 // precisa extender o BaseEntity
 export class Users extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ unsigned: true })
     @Field(() => ID)
     id: string;
 
@@ -28,11 +28,12 @@ export class Users extends BaseEntity {
     @Field({ nullable: true })
     avatar: string;
 
-    @Column({ nullable: true })
-    @Field({ nullable: true })
-    createdAt: string;
+    // esses decorators fazem a inserção de datas automaticamente
+    @CreateDateColumn({ name: 'createdAt' })
+    @Field()
+    createdAt: Date;
 
-    @Column({ nullable: true })
-    @Field({ nullable: true })
-    updatedAt: string;
+    @UpdateDateColumn({ name: 'updatedAt' })
+    @Field()
+    updatedAt: Date;
 }

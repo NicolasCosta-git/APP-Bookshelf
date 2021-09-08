@@ -1,3 +1,4 @@
+import { OrdersResolver } from './resolvers/OdersResolver'
 import { buildSchemaSync } from 'type-graphql'
 import { AuthGuard } from './middleware/Auth/AuthGuard'
 import { Container } from 'typedi'
@@ -10,7 +11,7 @@ export function buildApolloServer (testToken?: string) {
     return new ApolloServer({
     // Para habilitar a injeção de dependência com o typedi, tem que declarar o container dentro de buildSchema
         schema: buildSchemaSync({
-            resolvers: [UsersResolver, AuthResolver, BooksResolver],
+            resolvers: [UsersResolver, AuthResolver, BooksResolver, OrdersResolver],
             container: Container,
             authChecker: AuthGuard
         }),

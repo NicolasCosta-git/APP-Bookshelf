@@ -36,7 +36,8 @@ export default class BooksResolver {
     @Authorized()
     async createBook (
         @Arg('data', () => BooksInput) data: BooksInput,
-            @Arg('cover', () => GraphQLUpload) cover: Upload
+        // nullable false
+            @Arg('cover', () => GraphQLUpload, { nullable: true }) cover: Upload
     ): Promise<Books> {
         return await this.booksController.createBook(data, cover)
     }
