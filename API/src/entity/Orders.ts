@@ -45,7 +45,7 @@ export class Orders extends BaseEntity {
         primary: false,
         nullable: false
     })
-    @JoinColumn(() => String, { name: 'bookId', referencedColumnName: 'id' })
+    @JoinColumn({ name: 'bookId', referencedColumnName: 'id' })
     @Field()
     book: Books;
 
